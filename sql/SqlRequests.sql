@@ -1,17 +1,21 @@
+/* Créer la base de données */
 CREATE DATABASE Zoo_enclopedie;
 
+/* Créer la table d'habitat */
 CREATE TABLE Habitat (
     id_hab INT PRIMARY KEY AUTO_INCREMENT,
     name_hab VARCHAR(100),
     desc_hab TEXT
 );
 
+/* Créer la table d'Animal */
 CREATE TABLE Animal (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name_animal VARCHAR(100),
     type_alimentaire VARCHAR(100),
     image_animal VARCHAR(150),
     habitat_id INT,
+    /* Ajouter un lien entre table d'habitat avec celle d'Animal */
     FOREIGN KEY (habitat_id) REFERENCES Habitat(id_hab)
 );
 
