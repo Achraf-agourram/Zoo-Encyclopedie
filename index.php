@@ -17,17 +17,15 @@ $dict = [
 $animalsArray = [];
 
 $database = mysqli_connect("localhost", "root", "", "zoo_enclopedie");
-$animalsTable = mysqli_query($database, "SELECT * FROM animal");
+$animalsTable = mysqli_query($database, "SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
 while($row = mysqli_fetch_assoc($animalsTable)){
     array_push($animalsArray, $row);
 }
 
 
-
-
 ?>
 
-<!--DOCTYPE html>
+<DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,7 +45,7 @@ while($row = mysqli_fetch_assoc($animalsTable)){
         </div>
     </header>
 
-    <main class="mx-auto p-6" id="animaux">
+    <main class="mx-auto p-6">
         <h2 class="text-4xl font-extrabold text-gray-800 mb-8 text-center"><?= $dict[$currentLang][2]?> 🌎</h2>
         
         <div class="bg-white p-6 rounded-lg shadow-xl mb-10">
@@ -55,7 +53,7 @@ while($row = mysqli_fetch_assoc($animalsTable)){
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                     <label for="habitat-filter" class="block text-sm font-medium text-gray-700 mb-2"><?= $dict[$currentLang][4]?> :</label>
-                    <select id="habitat-filter" name="habitat" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                    <select name="habitat" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
                         <option value=""><?= $dict[$currentLang][5]?></option>
                         <option value="savane"><?= $dict[$currentLang][6]?></option>
                         <option value="forêt"><?= $dict[$currentLang][7]?></option>
@@ -65,7 +63,7 @@ while($row = mysqli_fetch_assoc($animalsTable)){
                 
                 <div>
                     <label for="food-filter" class="block text-sm font-medium text-gray-700 mb-2"><?= $dict[$currentLang][9]?> :</label>
-                    <select id="food-filter" name="food-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                    <select name="food-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
                         <option value=""><?= $dict[$currentLang][10]?></option>
                         <option value="carnivore"><?= $dict[$currentLang][11]?></option>
                         <option value="herbivore"><?= $dict[$currentLang][12]?></option>
@@ -81,32 +79,26 @@ while($row = mysqli_fetch_assoc($animalsTable)){
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="animal-grid">
-            
-            <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300 cursor-pointer">
-                <img src="images/lion.jpg" alt="Lion" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h4 class="text-xl font-bold text-gray-800 mb-2">Lion 🦁</h4>
-                    <p class="text-sm text-gray-600">
-                        <span class="font-semibold text-green-600"><?= $dict[$currentLang][15]?> :</span> Savane<br>
-                        <span class="font-semibold text-red-600"><?= $dict[$currentLang][16]?> :</span> Carnivore
-                    </p>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300 cursor-pointer">
-                <img src="images/giraffe.jpg" alt="Girafe" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h4 class="text-xl font-bold text-gray-800 mb-2">Girafe 🦒</h4>
-                    <p class="text-sm text-gray-600">
-                        <span class="font-semibold text-green-600"><?= $dict[$currentLang][15]?> :</span> Savane<br>
-                        <span class="font-semibold text-red-600"><?= $dict[$currentLang][16]?> :</span> Carnivore
-                    </p>
-                </div>
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <?php
+                foreach($animalsArray as $animal){
+                    echo "
+                    <div class='bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300'>
+                        <img src='images/{$animal['image_animal']}' alt='Lion' class='w-full h-48 object-cover'>
+                        <div class='p-4'>
+                            <h4 class='text-xl font-bold text-gray-800 mb-2'>{$animal['name_animal']}</h4>
+                            <p class='text-sm text-gray-600'>
+                                <span class='font-semibold text-green-600'>{$dict[$currentLang][15]} :</span> {$animal['name_hab']}<br>
+                                <span class='font-semibold text-red-600'>{$dict[$currentLang][16]} :</span> {$animal['type_alimentaire']}
+                            </p>
+                        </div>
+                    </div>
+                    ";
+                }
+            ?>
             
             </div>
     </main>
 
 </body>
-</html-->
+</html>
