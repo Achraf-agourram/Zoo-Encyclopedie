@@ -1,17 +1,28 @@
 <?php
-$currentLang = "en";
+session_start();
+if(!isset($_SESSION['lang'])){
+    $_SESSION['lang'] = "en";
+}
+$currentLang = $_SESSION['lang'];
+if(isset($_POST['changeLang'])){
+    if($currentLang == "en"){$currentLang = "fr";}else{$currentLang = "en";}
+    $_SESSION['lang'] = $currentLang;
+}
+
 $dict = [
     "fr" => ["Mon Petit Zoo", "Accès Educateurs", "Découvre les Animaux du Zoo !", "Filtrer les Animaux", "Habitat", "Tous les Habitats", "Savane", "Forêt", "Aquatique", "Régime Alimentaire", "Tous les Régimes", "Carnivore", "Herbivore", "Omnivore", "Appliquer les Filtres", "Habitat", "Régime", "Changer la langue"],
     "en" => ["My Little Zoo", "Educators Access", "Discover the Zoo Animals!", "Filter Animals", "Habitat", "All Habitats", "Savanna", "Forest", "Aquatic", "Diet", "All Diets", "Carnivore", "Herbivore", "Omnivore", "Apply Filters", "Habitat", "Diet", "Change language"]
 ];
 
+
 ?>
 
-<!DOCTYPE html>
+<DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Petit Zoo</title>
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-blue-50">
@@ -19,10 +30,10 @@ $dict = [
     <header class="bg-green-600 p-4 shadow-lg">
         <div class="mx-auto flex justify-between items-center">
             <h1 class="text-3xl font-bold text-white">🦁 <?= $dict[$currentLang][0]?> 🦒</h1>
-            <div>
-                <button class="bg-white text-green-800 px-4 py-2 rounded-full transition duration-300">🌏<?= $dict[$currentLang][17]?></button>
-                <button class="bg-white text-green-800 px-4 py-2 rounded-full transition duration-300">👨‍🏫 <?= $dict[$currentLang][1]?></button>
-            </div>
+            <form method="POST">
+                <button class="bg-white text-green-800 px-4 py-2 rounded-full transition duration-300" type="submit" name="changeLang">🌏<?= $dict[$currentLang][17]?></button>
+                <button class="bg-white text-green-800 px-4 py-2 rounded-full transition duration-300" type="submit" name="educatorAccess">👨‍🏫 <?= $dict[$currentLang][1]?></button>
+            </form>
         </div>
     </header>
 
