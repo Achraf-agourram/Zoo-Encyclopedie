@@ -14,10 +14,20 @@ $dict = [
     "en" => ["My Little Zoo", "Educators Access", "Discover the Zoo Animals!", "Filter Animals", "Habitat", "All Habitats", "Savanna", "Forest", "Aquatic", "Diet", "All Diets", "Carnivore", "Herbivore", "Omnivore", "Apply Filters", "Habitat", "Diet", "Change language"]
 ];
 
+$animalsArray = [];
+
+$database = mysqli_connect("localhost", "root", "", "zoo_enclopedie");
+$animalsTable = mysqli_query($database, "SELECT * FROM animal");
+while($row = mysqli_fetch_assoc($animalsTable)){
+    array_push($animalsArray, $row);
+}
+
+
+
 
 ?>
 
-<DOCTYPE html>
+<!--DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -99,4 +109,4 @@ $dict = [
     </main>
 
 </body>
-</html>
+</html-->
