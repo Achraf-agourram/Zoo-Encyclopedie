@@ -4,10 +4,11 @@ $dict = [
     "en" => ["My Little Zoo", "Educators Access", "Discover the Zoo Animals!", "Filter Animals", "Habitat", "All Habitats", "Savana", "Forest", "Aquatic", "Diet", "All Diets", "Carnivore", "Herbivore", "Omnivore", "Apply Filters", "Habitat", "Diet", "Change language", "Animal Management Space", "Add a New Animal", "Animal Form", "Animal Name", "Animal Image", "Save Animal", "Cancel", "Name", "Type", "Edit", "Delete", "Educator Space"]
 ];
 
+$database = mysqli_connect("localhost", "root", "", "zoo_enclopedie");
 $animalsArray = [];
 function get_animals($command){
     global $animalsArray;
-    $database = mysqli_connect("localhost", "root", "", "zoo_enclopedie");
+    global $database;
     $animalsTable = mysqli_query($database, $command);
     while($row = mysqli_fetch_assoc($animalsTable)){
         array_push($animalsArray, $row);

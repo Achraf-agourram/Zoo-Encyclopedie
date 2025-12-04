@@ -32,7 +32,7 @@ get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_ha
             <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="nom" class="block text-sm font-medium text-gray-700"><?= $dict[$currentLang][21]?> :</label>
-                    <input type="text" id="nom" name="nom" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
+                    <input type="text" name="name" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
                 </div>
 
                 <div>
