@@ -26,10 +26,14 @@ if(isset($_POST['filter'])){
     $habitat =  $_POST['habitat'];
     $diet = $_POST['diet'];
 
-
     if(!$habitat && !$diet){
         get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
-    }else{
+    }elseif($habitat && !$diet){
+        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE Habitat.name_hab = '$habitat';");
+    }elseif(!$habitat && $diet){
+        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE type_alimentaire= '$diet';");
+    }
+    else{
         get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE Habitat.name_hab = '$habitat' AND type_alimentaire= '$diet';");
     }
 }
