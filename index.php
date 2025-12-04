@@ -38,10 +38,7 @@ if(isset($_POST['filter'])){
     }
 }
 
-$dict = [
-    "fr" => ["Mon Petit Zoo", "Accès Educateurs", "Découvre les Animaux du Zoo !", "Filtrer les Animaux", "Habitat", "Tous les Habitats", "Savane", "Forêt", "Aquatique", "Régime Alimentaire", "Tous les Régimes", "Carnivore", "Herbivore", "Omnivore", "Appliquer les Filtres", "Habitat", "Régime", "Changer la langue"],
-    "en" => ["My Little Zoo", "Educators Access", "Discover the Zoo Animals!", "Filter Animals", "Habitat", "All Habitats", "Savana", "Forest", "Aquatic", "Diet", "All Diets", "Carnivore", "Herbivore", "Omnivore", "Apply Filters", "Habitat", "Diet", "Change language"]
-];
+include("dictionaire.php");
 
 if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
 
@@ -106,7 +103,7 @@ if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, H
                 foreach($animalsArray as $animal){
                     echo "
                     <div class='bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300'>
-                        <img src='images/{$animal['image_animal']}' alt='Lion' class='w-full h-48 object-cover'>
+                        <img src='images/{$animal['image_animal']}' alt='{$animal['name_animal']}' class='w-full h-48 object-cover'>
                         <div class='p-4'>
                             <h4 class='text-xl font-bold text-gray-800 mb-2'>{$animal['name_animal']}</h4>
                             <p class='text-sm text-gray-600'>

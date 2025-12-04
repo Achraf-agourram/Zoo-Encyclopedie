@@ -1,3 +1,7 @@
+<?php
+include("dictionaire.php");
+?>
+
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
