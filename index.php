@@ -3,10 +3,6 @@ $filtred = false;
 include("global.php");
 
 
-if(!isset($_SESSION['lang'])){
-    $_SESSION['lang'] = "en";
-}
-
 if(isset($_POST['changeLang'])){
     if($currentLang == "en"){$currentLang = "fr";}else{$currentLang = "en";}
     $_SESSION['lang'] = $currentLang;

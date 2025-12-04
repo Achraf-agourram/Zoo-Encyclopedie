@@ -15,6 +15,9 @@ function get_animals($command){
     mysqli_close($database);
 }
 session_start();
+if(!isset($_SESSION['lang'])){
+    $_SESSION['lang'] = "en";
+}
 $currentLang = $_SESSION['lang'];
 
 ?>
