@@ -1,5 +1,12 @@
 <?php
 include("global.php");
+if(isset($_POST['addAnimal'])){
+    $name = $_POST['name'];
+    $habitat = $_POST['habitat_id'];
+    $diet = $_POST['type_alimentaire'];
+    $image = $_POST['image'];
+    mysqli_query($database, "INSERT INTO animal (name_animal, type_alimentaire, image_animal, habitat_id) VALUES ('$name', '$diet', '$image', $habitat);");
+}
 get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
 ?>
 
@@ -22,23 +29,19 @@ get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_ha
 
         <div id="form-ajout" class="bg-green-50 p-6 rounded-lg shadow-inner mb-8 hidden">
             <h3 class="text-2xl font-semibold text-green-700 mb-4"><?= $dict[$currentLang][20]?></h3>
-            <form action="traitement_animal.php" method="POST" enctype="multipart/form-data"
-                class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                <input type="hidden" name="animal_id" value="">
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="nom" class="block text-sm font-medium text-gray-700"><?= $dict[$currentLang][21]?> :</label>
-                    <input type="text" id="nom" name="nom" required
-                        class="mt-1 w-full p-2 border border-gray-300 rounded-md">
+                    <input type="text" id="nom" name="nom" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
                 </div>
 
                 <div>
                     <label for="habitat" class="block text-sm font-medium text-gray-700">Habitat :</label>
-                    <select id="habitat" name="habitat_id" required
-                        class="mt-1 w-full p-2 border border-gray-300 rounded-md">
+                    <select id="habitat" name="habitat_id" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
                         <option value="1">Savane</option>
                         <option value="2">Forêt</option>
                         <option value="3">Aquatique</option>
+                        <option value="4">Desert</option>
                     </select>
                 </div>
 
@@ -54,12 +57,11 @@ get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_ha
 
                 <div>
                     <label for="image" class="block text-sm font-medium text-gray-700"><?= $dict[$currentLang][22]?> :</label>
-                    <input type="file" id="image" name="image" accept="image/*"
-                        class="mt-1 w-full p-2 border border-gray-300 rounded-md">
+                    <input type="file" required name="image" accept="image/*" class="mt-1 w-full p-2 border border-gray-300 rounded-md">
                 </div>
 
                 <div class="md:col-span-2 flex justify-end space-x-4">
-                    <button type="submit"
+                    <button type="submit" name="addAnimal"
                         class="bg-green-500 text-white font-bold px-6 py-2 rounded-lg hover:bg-green-600 transition"><?= $dict[$currentLang][23]?></button>
                     <button type="button" onclick="document.getElementById('form-ajout').classList.add('hidden')"
                         class="bg-gray-300 text-gray-800 font-bold px-6 py-2 rounded-lg hover:bg-gray-400 transition"><?= $dict[$currentLang][24]?></button>

@@ -65,6 +65,7 @@ if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, H
                         <option value="Savane"><?= $dict[$currentLang][6]?></option>
                         <option value="Forest"><?= $dict[$currentLang][7]?></option>
                         <option value="Aquatique"><?= $dict[$currentLang][8]?></option>
+                        <option value="Desert">Desert</option>
                     </select>
                 </div>
                 
