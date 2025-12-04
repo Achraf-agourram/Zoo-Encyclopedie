@@ -1,15 +1,6 @@
 <?php
 $filtred = false;
-$animalsArray = [];
-function get_animals($command){
-    global $animalsArray;
-    $database = mysqli_connect("localhost", "root", "", "zoo_enclopedie");
-    $animalsTable = mysqli_query($database, $command);
-    while($row = mysqli_fetch_assoc($animalsTable)){
-        array_push($animalsArray, $row);
-    }
-    mysqli_close($database);
-}
+include("global.php");
 
 
 session_start();
@@ -38,7 +29,6 @@ if(isset($_POST['filter'])){
     }
 }
 
-include("dictionaire.php");
 
 if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
 
@@ -48,7 +38,7 @@ if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, H
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Petit Zoo</title>
+    <title>Zoo</title>
     <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
