@@ -1,5 +1,6 @@
 <?php
 include("global.php");
+get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
 ?>
 
 <!DOCTYPE html>
@@ -83,17 +84,23 @@ include("global.php");
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y">
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap"><img src="images/lion.jpg" alt="Lion"
-                                class="h-10 w-10 rounded-full object-cover"></td>
-                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">Lion</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Savane</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Carnivore</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
-                            <button class="text-green-600 hover:text-green-900"><?= $dict[$currentLang][27]?></button>
-                            <button class="text-red-600 hover:text-red-900"><?= $dict[$currentLang][28]?></button>
-                        </td>
-                    </tr>
+                    <?php
+                        foreach($animalsArray as $animal){
+                            echo "
+                                <tr class='hover:bg-gray-50'>
+                                    <td class='px-6 py-4 whitespace-nowrap'><img src='images/{$animal['image_animal']}' alt='{$animal['name_animal']}'
+                                            class='h-10 w-10 rounded-full object-cover'></td>
+                                    <td class='px-6 py-4 whitespace-nowrap font-medium text-gray-900'>{$animal['name_animal']}</td>
+                                    <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{$animal['name_hab']}</td>
+                                    <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{$animal['type_alimentaire']}</td>
+                                    <td class='px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2'>
+                                        <button class='text-green-600 hover:text-green-900'>{$dict[$currentLang][27]}</button>
+                                        <button class='text-red-600 hover:text-red-900'>{$dict[$currentLang][28]}</button>
+                                    </td>
+                                </tr>
+                            ";
+                        }
+                    ?>
                 </tbody>
             </table>
         </div>
