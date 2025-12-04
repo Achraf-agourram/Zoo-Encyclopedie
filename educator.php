@@ -1,7 +1,5 @@
 <?php
 include("global.php");
-session_start();
-$currentLang = $_SESSION['lang'];
 ?>
 
 <!DOCTYPE html>

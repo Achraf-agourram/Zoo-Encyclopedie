@@ -14,5 +14,7 @@ function get_animals($command){
     }
     mysqli_close($database);
 }
+session_start();
+$currentLang = $_SESSION['lang'];
 
 ?>
