@@ -1,10 +1,15 @@
 <?php
 include("global.php");
+if(isset($_POST['back'])){
+    header("Location: index.php");
+    exit();
+}
 if(isset($_POST['addAnimal'])){
     $name = $_POST['name'];
     $habitat = $_POST['habitat_id'];
     $diet = $_POST['type_alimentaire'];
-    $image = $_POST['image'];
+    $image = $_FILES['image']['name'];
+    move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
     mysqli_query($database, "INSERT INTO animal (name_animal, type_alimentaire, image_animal, habitat_id) VALUES ('$name', '$diet', '$image', $habitat);");
 }
 get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
@@ -19,17 +24,21 @@ get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_ha
 </head>
 
 <body>
-    <div class="container mx-auto p-6 bg-white rounded-lg my-10" id="gestion">
+    <div class="mx-auto p-6 bg-white rounded-lg my-10" id="gestion">
         <h2 class="text-4xl font-extrabold text-green-700 mb-10 text-center"><?= $dict[$currentLang][18]?></h2>
 
-        <button onclick="document.getElementById('form-ajout').classList.toggle('hidden')"
-            class="bg-green-500 text-white font-bold px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300 mb-6 flex items-center">
-            + <?= $dict[$currentLang][19]?>
-        </button>
+        <div class="flex justify-between">
+            <button onclick="document.getElementById('form-ajout').classList.toggle('hidden')"
+                class="bg-green-500 text-white font-bold px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300 mb-6 flex items-center">
+                + <?= $dict[$currentLang][19]?>
+            </button>
+            <form method="post"><button type="submit" name="back" class="bg-red-500 text-white font-bold px-6 py-3 rounded-lg hover:bg-red-600 transition duration-300 mb-6 flex items-center"><?= $dict[$currentLang][30]?></button></form>
+        </div>
+        
 
         <div id="form-ajout" class="bg-green-50 p-6 rounded-lg shadow-inner mb-8 hidden">
             <h3 class="text-2xl font-semibold text-green-700 mb-4"><?= $dict[$currentLang][20]?></h3>
-            <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6" enctype="multipart/form-data">
                 <div>
                     <label for="nom" class="block text-sm font-medium text-gray-700"><?= $dict[$currentLang][21]?> :</label>
                     <input type="text" name="name" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
