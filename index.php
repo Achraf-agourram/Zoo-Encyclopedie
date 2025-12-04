@@ -1,4 +1,17 @@
 <?php
+$filtred = false;
+$animalsArray = [];
+function get_animals(){
+    global $animalsArray;
+    $database = mysqli_connect("localhost", "root", "", "zoo_enclopedie");
+    $animalsTable = mysqli_query($database, "SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
+    while($row = mysqli_fetch_assoc($animalsTable)){
+        array_push($animalsArray, $row);
+    }
+    mysqli_close($database);
+}
+
+
 session_start();
 if(!isset($_SESSION['lang'])){
     $_SESSION['lang'] = "en";
@@ -8,19 +21,28 @@ if(isset($_POST['changeLang'])){
     if($currentLang == "en"){$currentLang = "fr";}else{$currentLang = "en";}
     $_SESSION['lang'] = $currentLang;
 }
+if(isset($_POST['filter'])){
+    $filtred = true;
+    $habitat =  $_POST['habitat'];
+    $diet = $_POST['diet'];
+    if(!$habitat && !$diet){
+        get_animals();
+    }else{
+        get_animals();
+        $filtred_array = [];
+        foreach($animalsArray as $animal){
+            if($animal['name_hab'] == $habitat) array_push($filtred_array, $animal);
+        }
+        $animalsArray = $filtred_array;
+    }
+}
 
 $dict = [
     "fr" => ["Mon Petit Zoo", "Accès Educateurs", "Découvre les Animaux du Zoo !", "Filtrer les Animaux", "Habitat", "Tous les Habitats", "Savane", "Forêt", "Aquatique", "Régime Alimentaire", "Tous les Régimes", "Carnivore", "Herbivore", "Omnivore", "Appliquer les Filtres", "Habitat", "Régime", "Changer la langue"],
-    "en" => ["My Little Zoo", "Educators Access", "Discover the Zoo Animals!", "Filter Animals", "Habitat", "All Habitats", "Savanna", "Forest", "Aquatic", "Diet", "All Diets", "Carnivore", "Herbivore", "Omnivore", "Apply Filters", "Habitat", "Diet", "Change language"]
+    "en" => ["My Little Zoo", "Educators Access", "Discover the Zoo Animals!", "Filter Animals", "Habitat", "All Habitats", "Savana", "Forest", "Aquatic", "Diet", "All Diets", "Carnivore", "Herbivore", "Omnivore", "Apply Filters", "Habitat", "Diet", "Change language"]
 ];
 
-$animalsArray = [];
-
-$database = mysqli_connect("localhost", "root", "", "zoo_enclopedie");
-$animalsTable = mysqli_query($database, "SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
-while($row = mysqli_fetch_assoc($animalsTable)){
-    array_push($animalsArray, $row);
-}
+if(!$filtred) get_animals();
 
 
 ?>
@@ -50,33 +72,33 @@ while($row = mysqli_fetch_assoc($animalsTable)){
         
         <div class="bg-white p-6 rounded-lg shadow-xl mb-10">
             <h3 class="text-2xl font-semibold text-green-700 mb-4">🔎 <?= $dict[$currentLang][3]?></h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <form class="grid grid-cols-1 md:grid-cols-3 gap-6" method="POST">
                 <div>
                     <label for="habitat-filter" class="block text-sm font-medium text-gray-700 mb-2"><?= $dict[$currentLang][4]?> :</label>
                     <select name="habitat" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
                         <option value=""><?= $dict[$currentLang][5]?></option>
-                        <option value="savane"><?= $dict[$currentLang][6]?></option>
-                        <option value="forêt"><?= $dict[$currentLang][7]?></option>
-                        <option value="aquatique"><?= $dict[$currentLang][8]?></option>
+                        <option value="Savane"><?= $dict[$currentLang][6]?></option>
+                        <option value="Forest"><?= $dict[$currentLang][7]?></option>
+                        <option value="Aquatique"><?= $dict[$currentLang][8]?></option>
                     </select>
                 </div>
                 
                 <div>
                     <label for="food-filter" class="block text-sm font-medium text-gray-700 mb-2"><?= $dict[$currentLang][9]?> :</label>
-                    <select name="food-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                    <select name="diet" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
                         <option value=""><?= $dict[$currentLang][10]?></option>
-                        <option value="carnivore"><?= $dict[$currentLang][11]?></option>
-                        <option value="herbivore"><?= $dict[$currentLang][12]?></option>
-                        <option value="omnivore"><?= $dict[$currentLang][13]?></option>
+                        <option value="Carnivore"><?= $dict[$currentLang][11]?></option>
+                        <option value="Herbivore"><?= $dict[$currentLang][12]?></option>
+                        <option value="Omnivore"><?= $dict[$currentLang][13]?></option>
                     </select>
                 </div>
 
                 <div class="flex items-end">
-                    <button class="w-full bg-green-500 text-white font-bold p-3 rounded-lg hover:bg-green-600 transition duration-300">
+                    <button class="w-full bg-green-500 text-white font-bold p-3 rounded-lg hover:bg-green-600 transition duration-300" name="filter" type="submit">
                         <?= $dict[$currentLang][14]?>
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -96,7 +118,6 @@ while($row = mysqli_fetch_assoc($animalsTable)){
                     ";
                 }
             ?>
-            
             </div>
     </main>
 
