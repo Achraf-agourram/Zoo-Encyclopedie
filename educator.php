@@ -12,7 +12,11 @@ if(isset($_POST['addAnimal'])){
     move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
     mysqli_query($database, "INSERT INTO animal (name_animal, type_alimentaire, image_animal, habitat_id) VALUES ('$name', '$diet', '$image', $habitat);");
 }
-get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
+if(isset($_POST['delete'])){
+    $id = $_POST['delete'];
+    mysqli_query($database, "DELETE FROM Animal WHERE id = $id;");
+}
+get_animals("SELECT id, name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
 ?>
 
 <!DOCTYPE html>
@@ -105,8 +109,10 @@ get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_ha
                                     <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{$animal['name_hab']}</td>
                                     <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{$animal['type_alimentaire']}</td>
                                     <td class='px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2'>
-                                        <button class='text-green-600 hover:text-green-900'>{$dict[$currentLang][27]}</button>
-                                        <button class='text-red-600 hover:text-red-900'>{$dict[$currentLang][28]}</button>
+                                        <form method='POST'>
+                                            <button type='submit' name='edit' class='text-green-600 hover:text-green-900'>{$dict[$currentLang][27]}</button>
+                                            <button type='submit' name='delete' class='text-red-600 hover:text-red-900' value='{$animal['id']}'>{$dict[$currentLang][28]}</button>
+                                        </form>
                                     </td>
                                 </tr>
                             ";
