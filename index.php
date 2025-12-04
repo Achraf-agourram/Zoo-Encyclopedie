@@ -1,10 +1,10 @@
 <?php
 $filtred = false;
 $animalsArray = [];
-function get_animals(){
+function get_animals($command){
     global $animalsArray;
     $database = mysqli_connect("localhost", "root", "", "zoo_enclopedie");
-    $animalsTable = mysqli_query($database, "SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
+    $animalsTable = mysqli_query($database, $command);
     while($row = mysqli_fetch_assoc($animalsTable)){
         array_push($animalsArray, $row);
     }
@@ -25,15 +25,12 @@ if(isset($_POST['filter'])){
     $filtred = true;
     $habitat =  $_POST['habitat'];
     $diet = $_POST['diet'];
+
+
     if(!$habitat && !$diet){
-        get_animals();
+        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
     }else{
-        get_animals();
-        $filtred_array = [];
-        foreach($animalsArray as $animal){
-            if($animal['name_hab'] == $habitat) array_push($filtred_array, $animal);
-        }
-        $animalsArray = $filtred_array;
+        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE Habitat.name_hab = '$habitat' AND type_alimentaire= '$diet';");
     }
 }
 
@@ -42,8 +39,7 @@ $dict = [
     "en" => ["My Little Zoo", "Educators Access", "Discover the Zoo Animals!", "Filter Animals", "Habitat", "All Habitats", "Savana", "Forest", "Aquatic", "Diet", "All Diets", "Carnivore", "Herbivore", "Omnivore", "Apply Filters", "Habitat", "Diet", "Change language"]
 ];
 
-if(!$filtred) get_animals();
-
+if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
 
 ?>
 
