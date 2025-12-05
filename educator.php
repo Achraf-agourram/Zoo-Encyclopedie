@@ -1,9 +1,6 @@
 <?php
 include("global.php");
-if(isset($_POST['back'])){
-    header("Location: index.php");
-    exit();
-}
+
 if(isset($_POST['addAnimal'])){
     $name = $_POST['name'];
     $habitat = $_POST['habitat_id'];
@@ -39,7 +36,7 @@ get_animals("SELECT id, name_animal, image_animal, type_alimentaire, Habitat.nam
 </head>
 
 <body>
-    <div class="mx-auto p-6 bg-white rounded-lg my-10" id="gestion">
+    <div class="mx-auto p-6 bg-white rounded-lg" id="gestion">
         <h2 class="text-4xl font-extrabold text-green-700 mb-10 text-center"><?= $dict[$currentLang][18]?></h2>
 
         <div class="flex justify-between">

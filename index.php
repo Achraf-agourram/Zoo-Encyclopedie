@@ -2,11 +2,6 @@
 $filtred = false;
 include("global.php");
 
-
-if(isset($_POST['changeLang'])){
-    if($currentLang == "en"){$currentLang = "fr";}else{$currentLang = "en";}
-    $_SESSION['lang'] = $currentLang;
-}
 if(isset($_POST['filter'])){
     $filtred = true;
     $habitat =  $_POST['habitat'];
@@ -23,10 +18,6 @@ if(isset($_POST['filter'])){
         get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE Habitat.name_hab = '$habitat' AND type_alimentaire= '$diet';");
     }
 }
-if(isset($_POST['educatorAccess'])){
-    header("Location: educator.php");
-    exit();
-}
 
 if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
 
@@ -42,16 +33,7 @@ if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, H
 </head>
 <body class="bg-blue-50">
 
-    <header class="bg-green-600 p-4 shadow-lg">
-        <div class="mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-white">🦁 <?= $dict[$currentLang][0]?> 🦒</h1>
-            <form method="POST">
-                <button class="bg-white text-green-800 px-4 py-2 rounded-full transition duration-300" type="submit" name="changeLang">🌏<?= $dict[$currentLang][17]?></button>
-                <button class="bg-white text-green-800 px-4 py-2 rounded-full transition duration-300" type="submit" name="educatorAccess">👨‍🏫 <?= $dict[$currentLang][1]?></button>
-            </form>
-        </div>
-    </header>
-
+    <?php include("header.php");?>
     <main class="mx-auto p-6">
         <h2 class="text-4xl font-extrabold text-gray-800 mb-8 text-center"><?= $dict[$currentLang][2]?> 🌎</h2>
         
