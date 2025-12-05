@@ -9,11 +9,11 @@ $animalsArray = [];
 function get_animals($command){
     global $animalsArray;
     global $database;
+    $animalsArray = [];
     $animalsTable = mysqli_query($database, $command);
     while($row = mysqli_fetch_assoc($animalsTable)){
         array_push($animalsArray, $row);
     }
-    mysqli_close($database);
 }
 session_start();
 if(!isset($_SESSION['lang'])){

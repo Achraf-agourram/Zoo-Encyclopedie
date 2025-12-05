@@ -170,6 +170,7 @@ get_animals("SELECT id, name_animal, image_animal, type_alimentaire, Habitat.nam
                                 </tr>
                             ";
                         }
+                        mysqli_close($database);
                     ?>
                 </tbody>
             </table>

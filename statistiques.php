@@ -51,14 +51,16 @@ $mostHabitat = mysqli_fetch_assoc(mysqli_query($database, "SELECT habitat.name_h
                 <div id="habitat-bars" class="space-y-4">
                     <?php
                         $colors = ["yellow", "green", "blue", "red", "orange", "purple"];
-                        get_animals("SELECT habitat.name_hab, COUNT(*) FROM `animal` JOIN habitat ON habitat.id_hab = animal.habitat_id GROUP BY habitat_id;");
-                        foreach($animalsArray as $animal){
+                        get_animals("SELECT habitat.name_hab, COUNT(*) AS total FROM `animal` JOIN habitat ON habitat.id_hab = animal.habitat_id GROUP BY habitat_id;");
+                        
+                        for($i=0; $i<count($animalsArray); $i++){
+                            $animalsArray[$i]['percent'] = round(((int)$animalsArray[$i]['total'] / $animalsTotal) * 100);
                             echo "
                                 <div class='flex items-center space-x-4'>
-                                    <span class='w-24 font-bold text-gray-700 shrink-0'>{$animal["name_hab"]}</span>
+                                    <span class='w-24 font-bold text-gray-700 shrink-0'>{$animalsArray[$i]['name_hab']}</span>
                                     <div class='flex-grow bg-gray-200 rounded-full h-8'>
-                                        <div class='bg-yellow-500 h-8 rounded-full flex items-center justify-end pr-2 text-white font-semibold shadow-md' style='width: 50%;'>
-
+                                        <div class='bg-{$colors[$i]}-500 h-8 rounded-full flex items-center justify-end pr-2 text-white font-semibold shadow-md' style='width: {$animalsArray[$i]['percent']}%;'>
+                                            {$animalsArray[$i]['percent']}%
                                         </div>
                                     </div>
                                 </div>
@@ -71,36 +73,27 @@ $mostHabitat = mysqli_fetch_assoc(mysqli_query($database, "SELECT habitat.name_h
 
             <div class="bg-white p-6 rounded-xl shadow-2xl">
                 <h3 class="text-3xl font-semibold text-gray-800 mb-6 border-b pb-2">🍽️ <?=$dict[$currentLang][32]?></h3>
-                 <p class="text-gray-600 mb-4"><?=$dict[$currentLang][40]?></p>
-                
+                <p class="text-gray-600 mb-4"><?=$dict[$currentLang][40]?></p>
+
                 <div id="regime-bars" class="space-y-4">
-                    
-                    <div class="flex items-center space-x-4">
-                        <span class="w-28 font-bold text-gray-700 shrink-0">Herbivore</span>
-                        <div class="flex-grow bg-gray-200 rounded-full h-8">
-                            <div class="bg-green-400 h-8 rounded-full flex items-center justify-end pr-2 text-gray-800 font-semibold shadow-md" style="width: 40%;">
+                    <?php
+                        get_animals("SELECT type_alimentaire, COUNT(*) AS total from animal GROUP BY type_alimentaire;");
 
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center space-x-4">
-                        <span class="w-28 font-bold text-gray-700 shrink-0">Carnivore</span>
-                        <div class="flex-grow bg-gray-200 rounded-full h-8">
-                            <div class="bg-red-500 h-8 rounded-full flex items-center justify-end pr-2 text-white font-semibold shadow-md" style="width: 35%;">
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center space-x-4">
-                        <span class="w-28 font-bold text-gray-700 shrink-0">Omnivore</span>
-                        <div class="flex-grow bg-gray-200 rounded-full h-8">
-                            <div class="bg-orange-500 h-8 rounded-full flex items-center justify-end pr-2 text-white font-semibold shadow-md" style="width: 25%;">
-                                
-                            </div>
-                        </div>
-                    </div>
+                        for($i=0; $i<count($animalsArray); $i++){
+                            $animalsArray[$i]['percent'] = round(((int)$animalsArray[$i]['total'] / $animalsTotal) * 100);
+                            echo "
+                                <div class='flex items-center space-x-4'>
+                                    <span class='w-28 font-bold text-gray-700 shrink-0'>{$animalsArray[$i]['type_alimentaire']}</span>
+                                    <div class='flex-grow bg-gray-200 rounded-full h-8'>
+                                        <div class='bg-{$colors[$i]}-500 h-8 rounded-full text-white flex items-center justify-end pr-2 text-gray-800 font-semibold shadow-md' style='width: {$animalsArray[$i]['percent']}%;'>
+                                            {$animalsArray[$i]['percent']}%
+                                        </div>
+                                    </div>
+                                </div>
+                            ";
+                        }
+                        mysqli_close($database);
+                    ?>
 
                 </div>
             </div>

@@ -1,26 +1,6 @@
 <?php
 $filtred = false;
 include("global.php");
-
-if(isset($_POST['filter'])){
-    $filtred = true;
-    $habitat =  $_POST['habitat'];
-    $diet = $_POST['diet'];
-
-    if(!$habitat && !$diet){
-        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
-    }elseif($habitat && !$diet){
-        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE Habitat.name_hab = '$habitat';");
-    }elseif(!$habitat && $diet){
-        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE type_alimentaire= '$diet';");
-    }
-    else{
-        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE Habitat.name_hab = '$habitat' AND type_alimentaire= '$diet';");
-    }
-}
-
-if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
-
 ?>
 
 <DOCTYPE html>
@@ -44,10 +24,12 @@ if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, H
                     <label for="habitat-filter" class="block text-sm font-medium text-gray-700 mb-2"><?= $dict[$currentLang][4]?> :</label>
                     <select name="habitat" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
                         <option value=""><?= $dict[$currentLang][5]?></option>
-                        <option value="Savane"><?= $dict[$currentLang][6]?></option>
-                        <option value="Forest"><?= $dict[$currentLang][7]?></option>
-                        <option value="Aquatique"><?= $dict[$currentLang][8]?></option>
-                        <option value="Desert">Desert</option>
+                        <?php
+                            get_animals("SELECT DISTINCT habitat.name_hab FROM `animal` JOIN habitat ON habitat.id_hab = habitat_id;");
+                            foreach($animalsArray as $habitat){
+                                echo "<option value='{$habitat['name_hab']}'>{$habitat['name_hab']}</option>";
+                            }
+                        ?>
                     </select>
                 </div>
                 
@@ -55,9 +37,12 @@ if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, H
                     <label for="food-filter" class="block text-sm font-medium text-gray-700 mb-2"><?= $dict[$currentLang][9]?> :</label>
                     <select name="diet" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
                         <option value=""><?= $dict[$currentLang][10]?></option>
-                        <option value="Carnivore"><?= $dict[$currentLang][11]?></option>
-                        <option value="Herbivore"><?= $dict[$currentLang][12]?></option>
-                        <option value="Omnivore"><?= $dict[$currentLang][13]?></option>
+                        <?php
+                            get_animals("SELECT DISTINCT type_alimentaire FROM `animal`;");
+                            foreach($animalsArray as $diet){
+                                echo "<option value='{$diet['type_alimentaire']}'>{$diet['type_alimentaire']}</option>";
+                            }
+                        ?>
                     </select>
                 </div>
 
@@ -71,6 +56,25 @@ if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, H
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <?php
+                if(isset($_POST['filter'])){
+                    $filtred = true;
+                    $habitat =  $_POST['habitat'];
+                    $diet = $_POST['diet'];
+
+                    if(!$habitat && !$diet){
+                        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
+                    }elseif($habitat && !$diet){
+                        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE Habitat.name_hab = '$habitat';");
+                    }elseif(!$habitat && $diet){
+                        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE type_alimentaire= '$diet';");
+                    }
+                    else{
+                        get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab WHERE Habitat.name_hab = '$habitat' AND type_alimentaire= '$diet';");
+                    }
+                }
+
+                if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
+
                 foreach($animalsArray as $animal){
                     echo "
                     <div class='bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300'>
@@ -85,6 +89,7 @@ if(!$filtred) get_animals("SELECT name_animal, image_animal, type_alimentaire, H
                     </div>
                     ";
                 }
+                mysqli_close($database);
             ?>
             </div>
     </main>
