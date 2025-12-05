@@ -84,8 +84,7 @@ get_animals("SELECT id, name_animal, image_animal, type_alimentaire, Habitat.nam
                             </div>
 
                             <div class='md:col-span-2 flex justify-end space-x-4'>
-                                <button type='submit' name='editAnimal' value='{$_POST['edit']}'
-                                    class='bg-green-500 text-white font-bold px-6 py-2 rounded-lg hover:bg-green-600 transition'>{$dict[$currentLang][23]}</button>
+                                <button type='submit' name='editAnimal' value='{$_POST['edit']}' class='bg-green-500 text-white font-bold px-6 py-2 rounded-lg hover:bg-green-600 transition'>{$dict[$currentLang][23]}</button>
                                 <button type='button' name='cancelEdit' class='bg-gray-300 text-gray-800 font-bold px-6 py-2 rounded-lg hover:bg-gray-400 transition'>{$dict[$currentLang][24]}</button>
                             </div>
                         </form>

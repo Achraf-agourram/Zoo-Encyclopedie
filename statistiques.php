@@ -1,40 +1,41 @@
 <?php
-include("global.php")
+include("global.php");
+$animalsTotal = mysqli_fetch_assoc(mysqli_query($database, "SELECT COUNT(*) FROM animal;"))['COUNT(*)'];
+$habitatTotal = mysqli_fetch_assoc(mysqli_query($database, "SELECT COUNT(*) FROM habitat;"))['COUNT(*)'];
+$mostHabitat = mysqli_fetch_assoc(mysqli_query($database, "SELECT habitat.name_hab FROM `animal` JOIN habitat ON habitat.id_hab = animal.habitat_id GROUP BY habitat_id LIMIT 1;"))["name_hab"];
+// SELECT habitat.name_hab, COUNT(*) FROM `animal` JOIN habitat ON habitat.id_hab = animal.habitat_id GROUP BY habitat_id;
 ?>
 
 <DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoo</title>
+    <title><?=$dict[$currentLang][32]?></title>
     <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-blue-50">
     <?php include("header.php");?>
-    
+
     <main class="container mx-auto p-8">
-        <h2 class="text-5xl font-extrabold text-gray-800 mb-4 text-center">📈 Le Zoo en Chiffres</h2>
-        <p class="text-center text-xl text-green-700 mb-12">Une vue d'ensemble des données pour apprendre et visualiser.</p>
+        <h2 class="text-5xl font-extrabold text-gray-800 mb-4 text-center">📈<?=$dict[$currentLang][33]?></h2>
+        <p class="text-center text-xl text-green-700 mb-12"><?=$dict[$currentLang][34]?></p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             
             <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-green-500 text-center">
-                <p class="text-2xl font-bold text-gray-700">Total d'Animaux</p>
-                <p class="text-6xl font-extrabold text-green-600 mt-2" id="kpi-total-animaux">25</p> 
-                <p class="text-sm text-gray-500">Espèces enregistrées</p>
+                <p class="text-2xl font-bold text-gray-700"><?=$dict[$currentLang][35]?></p>
+                <p class="text-6xl font-extrabold text-green-600 mt-2"><?=$animalsTotal?></p> 
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-yellow-500 text-center">
-                <p class="text-2xl font-bold text-gray-700">Habitat Majoritaire</p>
-                <p class="text-4xl font-extrabold text-yellow-600 mt-2" id="kpi-habitat-majoritaire">Savane 🦁</p>
-                <p class="text-sm text-gray-500">Le plus grand groupe</p>
+                <p class="text-2xl font-bold text-gray-700"><?=$dict[$currentLang][36]?></p>
+                <p class="text-4xl font-extrabold text-yellow-600 mt-2"><?=$mostHabitat?></p>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-blue-500 text-center">
-                <p class="text-2xl font-bold text-gray-700">Diversité</p>
-                <p class="text-6xl font-extrabold text-blue-600 mt-2" id="kpi-habitats-differents">6</p>
-                <p class="text-sm text-gray-500">Habitats différents</p>
+                <p class="text-2xl font-bold text-gray-700"><?=$dict[$currentLang][37]?></p>
+                <p class="text-6xl font-extrabold text-blue-600 mt-2"><?=$habitatTotal?></p>
             </div>
         </div>
 
@@ -43,8 +44,8 @@ include("global.php")
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
             
             <div class="bg-white p-6 rounded-xl shadow-2xl">
-                <h3 class="text-3xl font-semibold text-gray-800 mb-6 border-b pb-2">🌍 Répartition par Habitat</h3>
-                <p class="text-gray-600 mb-4">Voir combien d'animaux vivent dans chaque type d'environnement.</p>
+                <h3 class="text-3xl font-semibold text-gray-800 mb-6 border-b pb-2">🌍 <?=$dict[$currentLang][38]?></h3>
+                <p class="text-gray-600 mb-4"><?=$dict[$currentLang][39]?></p>
                 
                 <div id="habitat-bars" class="space-y-4">
                     
@@ -79,8 +80,8 @@ include("global.php")
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-2xl">
-                <h3 class="text-3xl font-semibold text-gray-800 mb-6 border-b pb-2">🍽️ Répartition Alimentaire</h3>
-                 <p class="text-gray-600 mb-4">Combien d'animaux sont carnivores, herbivores, ou omnivores.</p>
+                <h3 class="text-3xl font-semibold text-gray-800 mb-6 border-b pb-2">🍽️ <?=$dict[$currentLang][32]?></h3>
+                 <p class="text-gray-600 mb-4"><?=$dict[$currentLang][40]?></p>
                 
                 <div id="regime-bars" class="space-y-4">
                     
