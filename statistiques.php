@@ -1,9 +1,10 @@
 <?php
 include("global.php");
-$animalsTotal = mysqli_fetch_assoc(mysqli_query($database, "SELECT COUNT(*) FROM animal;"))['COUNT(*)'];
-$habitatTotal = mysqli_fetch_assoc(mysqli_query($database, "SELECT COUNT(*) FROM habitat;"))['COUNT(*)'];
+$animalsTotal = (int)mysqli_fetch_assoc(mysqli_query($database, "SELECT COUNT(*) FROM animal;"))['COUNT(*)'];
+$habitatTotal = (int)mysqli_fetch_assoc(mysqli_query($database, "SELECT COUNT(*) FROM habitat;"))['COUNT(*)'];
 $mostHabitat = mysqli_fetch_assoc(mysqli_query($database, "SELECT habitat.name_hab FROM `animal` JOIN habitat ON habitat.id_hab = animal.habitat_id GROUP BY habitat_id LIMIT 1;"))["name_hab"];
-// SELECT habitat.name_hab, COUNT(*) FROM `animal` JOIN habitat ON habitat.id_hab = animal.habitat_id GROUP BY habitat_id;
+
+
 ?>
 
 <DOCTYPE html>
@@ -48,33 +49,22 @@ $mostHabitat = mysqli_fetch_assoc(mysqli_query($database, "SELECT habitat.name_h
                 <p class="text-gray-600 mb-4"><?=$dict[$currentLang][39]?></p>
                 
                 <div id="habitat-bars" class="space-y-4">
-                    
-                    <div class="flex items-center space-x-4">
-                        <span class="w-24 font-bold text-gray-700 shrink-0">Savane</span>
-                        <div class="flex-grow bg-gray-200 rounded-full h-8">
-                            <div class="bg-yellow-500 h-8 rounded-full flex items-center justify-end pr-2 text-white font-semibold shadow-md" style="width: 50%;">
+                    <?php
+                        $colors = ["yellow", "green", "blue", "red", "orange", "purple"];
+                        get_animals("SELECT habitat.name_hab, COUNT(*) FROM `animal` JOIN habitat ON habitat.id_hab = animal.habitat_id GROUP BY habitat_id;");
+                        foreach($animalsArray as $animal){
+                            echo "
+                                <div class='flex items-center space-x-4'>
+                                    <span class='w-24 font-bold text-gray-700 shrink-0'>{$animal["name_hab"]}</span>
+                                    <div class='flex-grow bg-gray-200 rounded-full h-8'>
+                                        <div class='bg-yellow-500 h-8 rounded-full flex items-center justify-end pr-2 text-white font-semibold shadow-md' style='width: 50%;'>
 
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center space-x-4">
-                        <span class="w-24 font-bold text-gray-700 shrink-0">Forêt</span>
-                        <div class="flex-grow bg-gray-200 rounded-full h-8">
-                            <div class="bg-green-600 h-8 rounded-full flex items-center justify-end pr-2 text-white font-semibold shadow-md" style="width: 30%;">
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center space-x-4">
-                        <span class="w-24 font-bold text-gray-700 shrink-0">Aquatique</span>
-                        <div class="flex-grow bg-gray-200 rounded-full h-8">
-                            <div class="bg-blue-500 h-8 rounded-full flex items-center justify-end pr-2 text-white font-semibold shadow-md" style="width: 20%;">
-
-                            </div>
-                        </div>
-                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ";
+                        }
+                    ?>
 
                 </div>
             </div>
