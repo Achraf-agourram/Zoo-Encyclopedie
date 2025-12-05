@@ -2,7 +2,7 @@
 include("global.php");
 $animalsTotal = (int)mysqli_fetch_assoc(mysqli_query($database, "SELECT COUNT(*) FROM animal;"))['COUNT(*)'];
 $habitatTotal = (int)mysqli_fetch_assoc(mysqli_query($database, "SELECT COUNT(*) FROM habitat;"))['COUNT(*)'];
-$mostHabitat = mysqli_fetch_assoc(mysqli_query($database, "SELECT habitat.name_hab FROM `animal` JOIN habitat ON habitat.id_hab = animal.habitat_id GROUP BY habitat_id LIMIT 1;"))["name_hab"];
+$mostHabitat = mysqli_fetch_assoc(mysqli_query($database, "SELECT habitat.name_hab, COUNT(*) as total FROM `animal` JOIN habitat ON habitat.id_hab = animal.habitat_id GROUP BY habitat_id ORDER BY total DESC LIMIT 1;"))["name_hab"];
 
 
 ?>
