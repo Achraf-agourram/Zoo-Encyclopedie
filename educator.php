@@ -14,7 +14,17 @@ if(isset($_POST['addAnimal'])){
 }
 if(isset($_POST['delete'])){
     $id = $_POST['delete'];
-    //mysqli_query($database, "DELETE FROM Animal WHERE id = $id;");
+    mysqli_query($database, "DELETE FROM Animal WHERE id = $id;");
+}
+if(isset($_POST['editAnimal'])){
+    $id = $_POST['editAnimal'];
+    $name = $_POST['name'];
+    $habitat = $_POST['habitat_id'];
+    $diet = $_POST['type_alimentaire'];
+    $image = $_FILES['image']['name'];
+
+    move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
+    mysqli_query($database, "UPDATE Animal SET name_animal = '$name', type_alimentaire = '$diet', image_animal = '$image', habitat_id = $habitat WHERE id = $id;");
 }
 
 get_animals("SELECT id, name_animal, image_animal, type_alimentaire, Habitat.name_hab FROM Animal JOIN Habitat ON Animal.habitat_id = Habitat.id_hab;");
@@ -77,7 +87,7 @@ get_animals("SELECT id, name_animal, image_animal, type_alimentaire, Habitat.nam
                             </div>
 
                             <div class='md:col-span-2 flex justify-end space-x-4'>
-                                <button type='submit' name='editAnimal'
+                                <button type='submit' name='editAnimal' value='{$_POST['edit']}'
                                     class='bg-green-500 text-white font-bold px-6 py-2 rounded-lg hover:bg-green-600 transition'>{$dict[$currentLang][23]}</button>
                                 <button type='button' name='cancelEdit' class='bg-gray-300 text-gray-800 font-bold px-6 py-2 rounded-lg hover:bg-gray-400 transition'>{$dict[$currentLang][24]}</button>
                             </div>
@@ -157,7 +167,7 @@ get_animals("SELECT id, name_animal, image_animal, type_alimentaire, Habitat.nam
                                     <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{$animal['type_alimentaire']}</td>
                                     <td class='px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2'>
                                         <form method='POST'>
-                                            <button type='submit' name='edit' class='text-green-600 hover:text-green-900'>{$dict[$currentLang][27]}</button>
+                                            <button type='submit' name='edit' class='text-green-600 hover:text-green-900' value='{$animal['id']}'>{$dict[$currentLang][27]}</button>
                                             <button type='submit' name='delete' class='text-red-600 hover:text-red-900' value='{$animal['id']}'>{$dict[$currentLang][28]}</button>
                                         </form>
                                     </td>
